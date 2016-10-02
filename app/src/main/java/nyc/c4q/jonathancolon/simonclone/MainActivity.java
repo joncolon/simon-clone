@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     ImageView btnRed;
     ImageView btnYellow;
     TextView roundCounter;
-    private ArrayList<Integer> playerPatternArray;
     private ArrayList<Integer> simonPatternArray = new ArrayList<>();
     private int index = 0;
     private static final String TAG = "MyActivity";
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         btnYellow = (ImageView) findViewById(R.id.yellowDim);
         roundCounter = (TextView) findViewById(R.id.roundcounter);
         startButton = (Button) findViewById(R.id.startButton);
-        startButton.setOnClickListener(new View.OnClickListener(){
+        startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startGame(true);
@@ -52,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-        public void startGame(boolean startGame){
+    public void startGame(boolean startGame) {
 
-        if(startGame == true){
+        if (startGame == true) {
             simonPatternArray.clear();
             activateButtons();
             round = 0;
@@ -76,14 +75,9 @@ public class MainActivity extends AppCompatActivity {
             int simonButtonPressed = simonPatternNum.nextInt(4);
 
             simonPatternArray.add(simonButtonPressed);
-            Log.e(TAG, "Current Simon Array: " + simonPatternArray);}
+            Log.e(TAG, "Current Simon Array: " + simonPatternArray);
+        }
 //        }
-
-
-
-
-        playerPatternArray = new ArrayList<>();
-
 
 
         btnGreen.setOnTouchListener(new View.OnTouchListener() {
@@ -91,9 +85,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     btnGreen.setImageResource(R.drawable.green_lit);
-                    playerPatternArray.add(0);
                     compareAnswers(0);
-                    Log.e(TAG, playerPatternArray.toString() + " This is the current array");
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP)
                     btnGreen.setImageResource(R.drawable.green_dim);
@@ -106,9 +98,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     btnRed.setImageResource(R.drawable.red_lit);
-                    playerPatternArray.add(1);
                     compareAnswers(1);
-                    Log.e(TAG, playerPatternArray.toString() + " This is the current array");
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP)
                     btnRed.setImageResource(R.drawable.red_dim);
@@ -135,9 +125,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     btnYellow.setImageResource(R.drawable.yellow_lit);
-                    playerPatternArray.add(3);
                     compareAnswers(3);
-                    Log.e(TAG, playerPatternArray.toString() + " This is the current array");
                 }
                 if (event.getAction() == MotionEvent.ACTION_UP)
                     btnYellow.setImageResource(R.drawable.yellow_dim);
@@ -150,17 +138,17 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 animateSimonPattern();
             }
-        },2000);
+        }, 2000);
     }
 
 
     public void animateSimonPattern() {
         for (int i = 0; i < simonPatternArray.size(); i++) {
             int indexTime = i;
-                flashButton(simonPatternArray.get(i), indexTime);
-            }
-
+            flashButton(simonPatternArray.get(i), indexTime);
         }
+
+    }
 
 
     public void flashButton(int buttonPressed, int indexTime) {
@@ -228,12 +216,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void compareAnswers(int buttonPressed){
+    public void compareAnswers(int buttonPressed) {
 
-        if (simonPatternArray.get(index) == buttonPressed){
+        if (simonPatternArray.get(index) == buttonPressed) {
             index++;
-        }
-        else {
+        } else {
             Toast.makeText(this, "INCORRECT", Toast.LENGTH_SHORT).show();
             recreate();
         }
@@ -247,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void deactivateButtons(){
+    public void deactivateButtons() {
         btnGreen.setEnabled(false);
         btnGreen.setImageResource(R.drawable.green_dim);
         btnRed.setEnabled(false);
@@ -258,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
         btnYellow.setImageResource(R.drawable.yellow_dim);
     }
 
-    public void activateButtons(){
+    public void activateButtons() {
         btnGreen.setEnabled(true);
         btnRed.setEnabled(true);
         btnBlue.setEnabled(true);
