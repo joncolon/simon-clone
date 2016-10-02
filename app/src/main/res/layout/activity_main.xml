@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/roundcounter"
-        tools:text="00"
+        tools:text="0"
         android:textSize="40sp"
         android:textColor="#ff1744"
         android:gravity="center"
@@ -35,7 +35,8 @@
             android:id="@+id/greenDim"
             android:padding="2dp"
             android:paddingLeft="4dp"
-            android:paddingRight="4dp" />
+            android:paddingRight="4dp"
+            android:clickable="true"/>
 
         <ImageView
             android:layout_width="175dp"
@@ -44,7 +45,8 @@
             android:id="@+id/redDim"
             android:padding="2dp"
             android:paddingLeft="4dp"
-            android:paddingRight="4dp" />
+            android:paddingRight="4dp"
+            android:clickable="true"/>
 
 
     </LinearLayout>
@@ -64,7 +66,8 @@
             android:id="@+id/blueDim"
             android:padding="2dp"
             android:paddingLeft="4dp"
-            android:paddingRight="4dp" />
+            android:paddingRight="4dp"
+            android:clickable="true"/>
 
         <ImageView
             android:layout_width="175dp"
@@ -73,11 +76,18 @@
             android:id="@+id/yellowDim"
             android:padding="2dp"
             android:paddingLeft="4dp"
-            android:paddingRight="4dp" />
+            android:paddingRight="4dp"
+            android:clickable="true"/>
 
     </LinearLayout>
 
-
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="41dp"
+        android:layout_gravity="center"
+        android:id="@+id/startButton"
+        android:text="START"
+        android:layout_marginTop="25dp" />
 
 
 </LinearLayout>
