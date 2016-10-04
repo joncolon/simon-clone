@@ -1,9 +1,14 @@
 package nyc.c4q.jonathancolon.simonclone;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -29,12 +34,18 @@ public class MainActivity extends AppCompatActivity {
     private int index = 0;
     private static final String TAG = "MyActivity";
     private Handler time;
-
+    private int oneSec = 1000;
+    boolean normalMode = true;
+    boolean hardMode = false;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
 
         btnGreen = (ImageView) findViewById(R.id.greenDim);
         btnBlue = (ImageView) findViewById(R.id.blueDim);
@@ -46,8 +57,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startGame(true);
+
             }
         });
+
+        startGame(true);
+        Toast.makeText(this, "Game Started!", Toast.LENGTH_SHORT).show();
+
 
     }
 
@@ -55,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (startGame == true) {
             simonPatternArray.clear();
-            activateButtons();
+            deactivateButtons();
             round = 0;
             round++;
             roundCounter.setText(String.valueOf(round));
@@ -79,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         }
 //        }
 
+        activateButtons();
 
         btnGreen.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -141,78 +158,171 @@ public class MainActivity extends AppCompatActivity {
         }, 2000);
     }
 
+    public void restartSimon() {
+        Toast.makeText(this, "Simon Restarted", Toast.LENGTH_LONG).show();
+        index = 0;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.mode_normal:
+                restartSimon();
+                break;
+            case R.id.mode_hard:
+                restartSimon();
+                hardMode = true;
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     public void animateSimonPattern() {
         for (int i = 0; i < simonPatternArray.size(); i++) {
             int indexTime = i;
             flashButton(simonPatternArray.get(i), indexTime);
         }
-
     }
-
 
     public void flashButton(int buttonPressed, int indexTime) {
         Handler timer = new Handler();
 
-        switch (buttonPressed) {
-            case 0:
-                timer.postDelayed(new TimerTask() {
-                    @Override
-                    public void run() {
-                        btnGreen.setImageResource(R.drawable.green_lit);
-                    }
-                }, 1000 * indexTime);
-                timer.postDelayed(new TimerTask() {
-                    @Override
-                    public void run() {
-                        btnGreen.setImageResource(R.drawable.green_dim);
-                    }
-                }, 1000 * indexTime + 500);
-                break;
-            case 1:
-                timer.postDelayed(new TimerTask() {
-                    @Override
-                    public void run() {
-                        btnRed.setImageResource(R.drawable.red_lit);
-                    }
-                }, 1000 * indexTime);
-                timer.postDelayed(new TimerTask() {
-                    @Override
-                    public void run() {
-                        btnRed.setImageResource(R.drawable.red_dim);
-                    }
-                }, 1000 * indexTime + 500);
-                break;
-            case 2:
-                timer.postDelayed(new TimerTask() {
-                    @Override
-                    public void run() {
-                        btnBlue.setImageResource(R.drawable.blue_lit);
-                    }
-                }, 1000 * indexTime);
-                timer.postDelayed(new TimerTask() {
-                    @Override
-                    public void run() {
-                        btnBlue.setImageResource(R.drawable.blue_dim);
-                    }
-                }, 1000 * indexTime + 500);
-                break;
-            case 3:
-                timer.postDelayed(new TimerTask() {
-                    @Override
-                    public void run() {
-                        btnYellow.setImageResource(R.drawable.yellow_lit);
-                    }
-                }, 1000 * indexTime);
-                timer.postDelayed(new TimerTask() {
-                    @Override
-                    public void run() {
-                        btnYellow.setImageResource(R.drawable.yellow_dim);
-                    }
-                }, 1000 * indexTime + 500);
-                break;
-            default:
-                break;
+        deactivateButtons();
+
+        if (normalMode == true) {
+            switch (buttonPressed) {
+                case 0:
+                    timer.postDelayed(new TimerTask() {
+                        @Override
+                        public void run() {
+                            btnGreen.setImageResource(R.drawable.green_lit);
+                        }
+                    }, oneSec * indexTime);
+                    timer.postDelayed(new TimerTask() {
+                        @Override
+                        public void run() {
+                            btnGreen.setImageResource(R.drawable.green_dim);
+                        }
+                    }, oneSec * indexTime + 500);
+                    break;
+                case 1:
+                    timer.postDelayed(new TimerTask() {
+                        @Override
+                        public void run() {
+                            btnRed.setImageResource(R.drawable.red_lit);
+                        }
+                    }, oneSec * indexTime);
+                    timer.postDelayed(new TimerTask() {
+                        @Override
+                        public void run() {
+                            btnRed.setImageResource(R.drawable.red_dim);
+                        }
+                    }, oneSec * indexTime + 500);
+                    break;
+                case 2:
+                    timer.postDelayed(new TimerTask() {
+                        @Override
+                        public void run() {
+                            btnBlue.setImageResource(R.drawable.blue_lit);
+                        }
+                    }, oneSec * indexTime);
+                    timer.postDelayed(new TimerTask() {
+                        @Override
+                        public void run() {
+                            btnBlue.setImageResource(R.drawable.blue_dim);
+                        }
+                    }, oneSec * indexTime + 500);
+                    break;
+                case 3:
+                    timer.postDelayed(new TimerTask() {
+                        @Override
+                        public void run() {
+                            btnYellow.setImageResource(R.drawable.yellow_lit);
+                        }
+                    }, oneSec * indexTime);
+                    timer.postDelayed(new TimerTask() {
+                        @Override
+                        public void run() {
+                            btnYellow.setImageResource(R.drawable.yellow_dim);
+                        }
+                    }, oneSec * indexTime + 500);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (hardMode == true) {
+            normalMode = false;
+            oneSec = 500;
+            switch (buttonPressed) {
+                case 0:
+                    timer.postDelayed(new TimerTask() {
+                        @Override
+                        public void run() {
+                            btnGreen.setImageResource(R.drawable.green_lit);
+                        }
+                    }, oneSec * indexTime);
+                    timer.postDelayed(new TimerTask() {
+                        @Override
+                        public void run() {
+                            btnGreen.setImageResource(R.drawable.green_dim);
+                        }
+                    }, oneSec * indexTime + 500);
+                    break;
+                case 1:
+                    timer.postDelayed(new TimerTask() {
+                        @Override
+                        public void run() {
+                            btnRed.setImageResource(R.drawable.red_lit);
+                        }
+                    }, oneSec * indexTime);
+                    timer.postDelayed(new TimerTask() {
+                        @Override
+                        public void run() {
+                            btnRed.setImageResource(R.drawable.red_dim);
+                        }
+                    }, oneSec * indexTime + 500);
+                    break;
+                case 2:
+                    timer.postDelayed(new TimerTask() {
+                        @Override
+                        public void run() {
+                            btnBlue.setImageResource(R.drawable.blue_lit);
+                        }
+                    }, oneSec * indexTime);
+                    timer.postDelayed(new TimerTask() {
+                        @Override
+                        public void run() {
+                            btnBlue.setImageResource(R.drawable.blue_dim);
+                        }
+                    }, oneSec * indexTime + 500);
+                    break;
+                case 3:
+                    timer.postDelayed(new TimerTask() {
+                        @Override
+                        public void run() {
+                            btnYellow.setImageResource(R.drawable.yellow_lit);
+                        }
+                    }, oneSec * indexTime);
+                    timer.postDelayed(new TimerTask() {
+                        @Override
+                        public void run() {
+                            btnYellow.setImageResource(R.drawable.yellow_dim);
+                        }
+                    }, oneSec * indexTime + 500);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
