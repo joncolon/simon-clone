@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MyActivity";
     private Handler time;
     private int oneSec = 1000;
+    private int halfsec = 500;
+    private int quartsec = 250;
     boolean normalMode = true;
     boolean hardMode = false;
     private SharedPreferences prefs;
@@ -61,8 +63,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        startGame(true);
-        Toast.makeText(this, "Game Started!", Toast.LENGTH_SHORT).show();
+
 
 
     }
@@ -71,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (startGame == true) {
             simonPatternArray.clear();
-            deactivateButtons();
             round = 0;
             round++;
             roundCounter.setText(String.valueOf(round));
@@ -160,7 +160,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void restartSimon() {
         Toast.makeText(this, "Simon Restarted", Toast.LENGTH_LONG).show();
-        index = 0;
+        startGame(false);
+        startGame(true);
     }
 
     @Override
@@ -195,7 +196,6 @@ public class MainActivity extends AppCompatActivity {
     public void flashButton(int buttonPressed, int indexTime) {
         Handler timer = new Handler();
 
-        deactivateButtons();
 
         if (normalMode == true) {
             switch (buttonPressed) {
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             btnGreen.setImageResource(R.drawable.green_dim);
                         }
-                    }, oneSec * indexTime + 500);
+                    }, oneSec * indexTime + halfsec);
                     break;
                 case 1:
                     timer.postDelayed(new TimerTask() {
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             btnRed.setImageResource(R.drawable.red_dim);
                         }
-                    }, oneSec * indexTime + 500);
+                    }, oneSec * indexTime + halfsec);
                     break;
                 case 2:
                     timer.postDelayed(new TimerTask() {
@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             btnBlue.setImageResource(R.drawable.blue_dim);
                         }
-                    }, oneSec * indexTime + 500);
+                    }, oneSec * indexTime + halfsec);
                     break;
                 case 3:
                     timer.postDelayed(new TimerTask() {
@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             btnYellow.setImageResource(R.drawable.yellow_dim);
                         }
-                    }, oneSec * indexTime + 500);
+                    }, oneSec * indexTime + halfsec);
                     break;
                 default:
                     break;
@@ -270,13 +270,13 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             btnGreen.setImageResource(R.drawable.green_lit);
                         }
-                    }, oneSec * indexTime);
+                    }, halfsec * indexTime);
                     timer.postDelayed(new TimerTask() {
                         @Override
                         public void run() {
                             btnGreen.setImageResource(R.drawable.green_dim);
                         }
-                    }, oneSec * indexTime + 500);
+                    }, halfsec * indexTime + quartsec);
                     break;
                 case 1:
                     timer.postDelayed(new TimerTask() {
@@ -284,13 +284,13 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             btnRed.setImageResource(R.drawable.red_lit);
                         }
-                    }, oneSec * indexTime);
+                    }, halfsec * indexTime);
                     timer.postDelayed(new TimerTask() {
                         @Override
                         public void run() {
                             btnRed.setImageResource(R.drawable.red_dim);
                         }
-                    }, oneSec * indexTime + 500);
+                    }, halfsec * indexTime + quartsec);
                     break;
                 case 2:
                     timer.postDelayed(new TimerTask() {
@@ -298,13 +298,13 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             btnBlue.setImageResource(R.drawable.blue_lit);
                         }
-                    }, oneSec * indexTime);
+                    }, halfsec * indexTime);
                     timer.postDelayed(new TimerTask() {
                         @Override
                         public void run() {
                             btnBlue.setImageResource(R.drawable.blue_dim);
                         }
-                    }, oneSec * indexTime + 500);
+                    }, halfsec * indexTime + quartsec);
                     break;
                 case 3:
                     timer.postDelayed(new TimerTask() {
@@ -312,13 +312,13 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             btnYellow.setImageResource(R.drawable.yellow_lit);
                         }
-                    }, oneSec * indexTime);
+                    }, halfsec * indexTime);
                     timer.postDelayed(new TimerTask() {
                         @Override
                         public void run() {
                             btnYellow.setImageResource(R.drawable.yellow_dim);
                         }
-                    }, oneSec * indexTime + 500);
+                    }, halfsec * indexTime + quartsec);
                     break;
                 default:
                     break;
